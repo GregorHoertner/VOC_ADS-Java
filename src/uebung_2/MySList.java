@@ -35,7 +35,7 @@ public class MySList extends SList {
 		return current;
 	}
 	
-	public boolean insertAfter(IKey key, Object data) {
+	public boolean insert(IKey key, Object data) {
 		Node previousNode = searchForNode(key);
 		
 		if (previousNode != null) {
