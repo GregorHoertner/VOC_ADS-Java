@@ -1,4 +1,4 @@
-package uebung_2.tests;
+package uebung_2.ue;
 
 import kapitel_3.vl.IKey;
 

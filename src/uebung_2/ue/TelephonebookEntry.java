@@ -1,6 +1,5 @@
-package uebung_2.tests;
+package uebung_2.ue;
 
-import uebung_2.ue.SList;
 import kapitel_3.vl.IFIterator;
 
 public class TelephonebookEntry {
