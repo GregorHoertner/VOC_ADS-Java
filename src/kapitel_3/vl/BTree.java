@@ -11,8 +11,8 @@ public class BTree {
         public Node left = null;	// Reference to the left child-node
         public Object data = null;	// Reference to the stored data set
         
-        public Node(Node left, Object data, Node right) { // Construct a new node by
-            this.data = data;					          // storing the data set
+        public Node(Node left, Object data, Node right) { // Construct a new node
+            this.data = data;					          // by storing the data set
             this.left = left;					          // and refer to the left and
             this.right = right;					          // right child-node
         }
@@ -196,7 +196,7 @@ public class BTree {
     private class BTreeIterator implements IFIterator { // Iterator, based on breadth-first
         private Queue queue = new Queue();              // A helper-queue
         
-        public BTreeIterator(Node startNode) { // New iterator, starting at startNode
+        private BTreeIterator(Node startNode) { // New iterator, starting at startNode
             if (startNode != null) {
                 queue.enqueue(startNode);      // Enqueue the startNode
             }
