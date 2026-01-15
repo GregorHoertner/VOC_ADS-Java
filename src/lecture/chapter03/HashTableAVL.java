@@ -1,36 +1,19 @@
 package lecture.chapter03;
 
-/**
- * Hashtable mit Kollisionsauflösung mittels AVLTrees
- * 
- * Anstatt SLists wie in der Standard-Hashtable verwendet diese Implementierung
- * AVLTrees zur Speicherung von Kollisionen in jedem Bucket.
- * 
- * Vorteile gegenüber SList:
- * - Bessere Suchzeit bei vielen Kollisionen: O(log n) statt O(n)
- * - Automatische Balancierung sorgt für gleichmäßige Performance
- */
 public class HashTableAVL {
     protected BucketAVL[] buckets = null;
     protected int size = 0;
     protected int maxLoad = 0;
     protected int currentLoad = 0;
     
-    /**
-     * Bucket mit AVLTree zur Kollisionsauflösung
-     */
     protected static class BucketAVL {
         private AVLTree tree;
         
         public BucketAVL() {
-            // AVLTree benötigt einen Comparator für Tuple-Objekte
             tree = new AVLTree(new TupleComparator());
         }
     }
     
-    /**
-     * Tuple speichert Hash, Key und Data
-     */
     protected static class Tuple {
         public long hash;
         public String key;
@@ -43,9 +26,6 @@ public class HashTableAVL {
         }
     }
     
-    /**
-     * Comparator für Tuples - vergleicht nach Key
-     */
     protected static class TupleComparator implements IComparator {
         public int compare(Object data1, Object data2) {
             Tuple t1 = (Tuple) data1;
@@ -60,9 +40,6 @@ public class HashTableAVL {
         }
     }
     
-    /**
-     * Key für die Suche nach Tuples
-     */
     protected static class TupleKey implements IKey {
         String key;
         
@@ -75,9 +52,6 @@ public class HashTableAVL {
         }
     }
     
-    /**
-     * SDBM Hash-Funktion
-     */
     protected static long sdbm(String s) {
         long hash = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -86,26 +60,16 @@ public class HashTableAVL {
         return hash;
     }
     
-    /**
-     * Standard-Konstruktor mit Default-Größe
-     */
     public HashTableAVL() {
-        this(4); // 2^4 = 16 Buckets
+        this(4);
     }
     
-    /**
-     * Konstruktor mit Exponent für initiale Größe
-     * @param exponent Exponent zur Basis 2 (Größe = 2^exponent)
-     */
     public HashTableAVL(int exponent) {
         size = 1 << exponent;
         maxLoad = (int) (size * 0.75);
         buckets = initBuckets(size);
     }
     
-    /**
-     * Initialisiert die Buckets
-     */
     private static BucketAVL[] initBuckets(int size) {
         BucketAVL[] b = new BucketAVL[size];
         for (int i = 0; i < b.length; i++) {
@@ -114,11 +78,6 @@ public class HashTableAVL {
         return b;
     }
     
-    /**
-     * Fügt ein Key-Value-Paar in die Hashtable ein
-     * @param key Der Schlüssel
-     * @param data Die zu speichernden Daten
-     */
     public void insert(String key, Object data) {
         long hash = sdbm(key);
         Tuple tuple = new Tuple(hash, key, data);
@@ -131,9 +90,6 @@ public class HashTableAVL {
         }
     }
     
-    /**
-     * Vergrößert die Hashtable wenn der Load-Factor überschritten wird
-     */
     public void resize() {
         BucketAVL[] newBuckets = initBuckets(size << 1);
         
@@ -151,11 +107,6 @@ public class HashTableAVL {
         buckets = newBuckets;
     }
     
-    /**
-     * Sucht ein Element anhand des Keys
-     * @param key Der Schlüssel
-     * @return Die gespeicherten Daten oder null
-     */
     public Object get(String key) {
         long hash = sdbm(key);
         BucketAVL bucket = buckets[(int) (hash & (size - 1))];
@@ -166,10 +117,6 @@ public class HashTableAVL {
         return (entry != null) ? entry.data : null;
     }
     
-    /**
-     * Entfernt ein Element anhand des Keys
-     * @param key Der Schlüssel
-     */
     public void remove(String key) {
         long hash = sdbm(key);
         BucketAVL bucket = buckets[(int) (hash & (size - 1))];
@@ -183,16 +130,10 @@ public class HashTableAVL {
         }
     }
     
-    /**
-     * Gibt die aktuelle Anzahl der Elemente zurück
-     */
     public int getCurrentLoad() {
         return currentLoad;
     }
     
-    /**
-     * Gibt die Anzahl der Buckets zurück
-     */
     public int getSize() {
         return size;
     }
